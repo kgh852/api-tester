@@ -1,243 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Tester - GET, POST, PUT, DELETE</title>
+  <title>API Tester</title>
   <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-    }
-
-    h1 {
-        text-align: center;
-        color: #333;
+      font-family: Arial, sans-serif;
+      background-color: #eceff1;
+      margin: 0;
+      padding: 20px;
     }
 
     .container {
-        max-width: 900px;
-        margin: 0 auto;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
     }
 
     .form-group {
-        margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 8px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
     }
 
-    input[type="text"],
-    textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 10px;
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
     }
 
     button {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
+      background-color: #0277bd;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
     }
 
     button:hover {
-        background-color: #218838;
+      background-color: #01579b;
     }
 
     .result-section {
-        margin-top: 20px;
+      margin-top: 20px;
     }
 
     pre {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-
-    .button-group {
-        text-align: right;
-    }
-
-    h2 {
-        color: #555;
-        margin-bottom: 10px;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 5px;
+      background-color: #f8f9fa;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
   </style>
   <script>
-    async function fetchHtml() {
-        const url = document.getElementById("url").value;
-        if (!url) {
-            alert("URL을 입력해주세요.");
-            return;
+    async function sendRequest() {
+      const url = document.getElementById("url").value;
+      const method = document.getElementById("method").value;
+      const body = document.getElementById("body").value;
+
+      if (!url) {
+          alert("URL을 입력해주세요.");
+          return;
+      }
+
+      try {
+        const options = { method, headers: { 'Content-Type': 'application/json' } };
+        if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
+          options.body = body;
         }
 
-        try {
-            const response = await fetch(`/api/fetch?url=${encodeURIComponent(url)}`);
-            const result = await response.text();
-            document.getElementById("result").textContent = result;
-        } catch (error) {
-            document.getElementById("result").textContent = "오류 발생: " + error;
-        }
-    }
-
-    async function sendPostRequest() {
-        const url = document.getElementById("postUrl").value;
-        const body = document.getElementById("postBody").value;
-
-        if (!url || !body) {
-            alert("URL과 JSON Body를 입력해주세요.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/sendPost?url=${encodeURIComponent(url)}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            });
-            const result = await response.text();
-            document.getElementById("postResult").textContent = result;
-        } catch (error) {
-            document.getElementById("postResult").textContent = "오류 발생: " + error;
-        }
-    }
-
-    async function sendPutRequest() {
-        const url = document.getElementById("putUrl").value;
-        const body = document.getElementById("putBody").value;
-
-        if (!url || !body) {
-            alert("URL과 JSON Body를 입력해주세요.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/sendPut?url=${encodeURIComponent(url)}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            });
-            const result = await response.text();
-            document.getElementById("putResult").textContent = result;
-        } catch (error) {
-            document.getElementById("putResult").textContent = "오류 발생: " + error;
-        }
-    }
-
-    async function sendDeleteRequest() {
-        const url = document.getElementById("deleteUrl").value;
-        const body = document.getElementById("deleteBody").value;
-
-        if (!url || !body) {
-            alert("URL과 JSON Body를 입력해주세요.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/sendDelete?url=${encodeURIComponent(url)}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            });
-            const result = await response.text();
-            document.getElementById("deleteResult").textContent = result;
-        } catch (error) {
-            document.getElementById("deleteResult").textContent = "오류 발생: " + error;
-        }
+        const response = await fetch(`/api/sendRequest?url=${encodeURIComponent(url)}`, options);
+        const result = await response.text();
+        document.getElementById("result").textContent = result;
+      } catch (error) {
+        document.getElementById("result").textContent = "오류 발생: " + error;
+      }
     }
   </script>
 </head>
 <body>
 <div class="container">
-  <h1>API Tester - GET, POST, PUT, DELETE</h1>
+  <h1>API Tester</h1>
 
-  <h2>GET 요청</h2>
+  <div class="form-group">
+    <label for="method">요청 타입 선택:</label>
+    <select id="method">
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+      <option value="PUT">PUT</option>
+      <option value="DELETE">DELETE</option>
+    </select>
+  </div>
+
   <div class="form-group">
     <label for="url">URL 입력:</label>
     <input type="text" id="url" placeholder="http://example.com">
-    <div class="button-group">
-      <button onclick="fetchHtml()">GET 요청 보내기</button>
-    </div>
   </div>
 
-  <h2>POST 요청</h2>
   <div class="form-group">
-    <label for="postUrl">POST URL 입력:</label>
-    <input type="text" id="postUrl" placeholder="http://example.com">
-  </div>
-  <div class="form-group">
-    <label for="postBody">POST Body (JSON 형식):</label>
-    <textarea id="postBody" rows="5" placeholder='{"key": "value"}'></textarea>
-  </div>
-  <div class="button-group">
-    <button onclick="sendPostRequest()">POST 요청 보내기</button>
+    <label for="body">Body (JSON 형식, GET 요청 시 생략 가능):</label>
+    <textarea id="body" rows="5" placeholder='{"key": "value"}'></textarea>
   </div>
 
-  <h2>PUT 요청</h2>
-  <div class="form-group">
-    <label for="putUrl">PUT URL 입력:</label>
-    <input type="text" id="putUrl" placeholder="http://example.com">
-  </div>
-  <div class="form-group">
-    <label for="putBody">PUT Body (JSON 형식):</label>
-    <textarea id="putBody" rows="5" placeholder='{"key": "value"}'></textarea>
-  </div>
-  <div class="button-group">
-    <button onclick="sendPutRequest()">PUT 요청 보내기</button>
-  </div>
-
-  <h2>DELETE 요청</h2>
-  <div class="form-group">
-    <label for="deleteUrl">DELETE URL 입력:</label>
-    <input type="text" id="deleteUrl" placeholder="http://example.com">
-  </div>
-  <div class="form-group">
-    <label for="deleteBody">DELETE Body (JSON 형식):</label>
-    <textarea id="deleteBody" rows="5" placeholder='{"key": "value"}'></textarea>
-  </div>
-  <div class="button-group">
-    <button onclick="sendDeleteRequest()">DELETE 요청 보내기</button>
-  </div>
+  <button onclick="sendRequest()">요청 보내기</button>
 
   <div class="result-section">
-    <h2>결과</h2>
-    <h3>GET 요청 결과</h3>
+    <h2>요청 결과</h2>
     <pre id="result"></pre>
-
-    <h3>POST 요청 결과</h3>
-    <pre id="postResult"></pre>
-
-    <h3>PUT 요청 결과</h3>
-    <pre id="putResult"></pre>
-
-    <h3>DELETE 요청 결과</h3>
-    <pre id="deleteResult"></pre>
   </div>
 </div>
 </body>
