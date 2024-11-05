@@ -58,7 +58,7 @@ public class ApiController {
         }
     }
 
-    // URL의 HTML 콘텐츠를 GET 요청으로 가져오는 엔드포인트
+
     @GetMapping("/fetch")
     public ResponseEntity<String> fetchHtmlFromUrl(@RequestParam String url) {
         try {
