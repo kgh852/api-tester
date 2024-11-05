@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api")
 public class ApiController {
 
-    // GET 요청 처리
     @GetMapping("/sendRequest")
     public ResponseEntity<String> sendGetRequest(@RequestParam String url) {
         try {
@@ -20,7 +19,6 @@ public class ApiController {
         }
     }
 
-    // POST 요청 처리
     @PostMapping("/sendRequest")
     public ResponseEntity<String> sendPostRequest(@RequestParam String url, @RequestBody String jsonBody) {
         try {
@@ -35,7 +33,6 @@ public class ApiController {
         }
     }
 
-    // PUT 요청 처리
     @PutMapping("/sendRequest")
     public ResponseEntity<String> sendPutRequest(@RequestParam String url, @RequestBody String jsonBody) {
         try {
@@ -50,7 +47,6 @@ public class ApiController {
         }
     }
 
-    // DELETE 요청 처리
     @DeleteMapping("/sendRequest")
     public ResponseEntity<String> sendDeleteRequest(@RequestParam String url) {
         try {
